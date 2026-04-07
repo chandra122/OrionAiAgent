@@ -1,0 +1,31 @@
+{
+  "first_name": "Jane",
+  "last_name": "Doe",
+  "full_name": "Jane Doe",
+  "email": "jane.doe@example.com",
+  "phone": "+1 (555) 123-4567",
+  "location": "San Francisco, California",
+  "linkedin_url": "https://www.linkedin.com/in/janedoe/",
+  "github_url": "https://github.com/janedoe",
+  "portfolio_url": "",
+  "resume_path": "C:\\Users\\YourName\\Documents\\Resume\\YourResume.pdf",
+
+  "current_title": "Software Engineer",
+  "current_company": "Acme Corp",
+  "years_experience": "5",
+
+  "work_authorization": "Yes, I am authorized to work in the US",
+  "requires_sponsorship": "No",
+  "willing_to_relocate": "No",
+
+  "standard_answers": {
+    "salary_expectation": "130000",
+    "notice_period": "2 weeks",
+    "how_did_you_hear": "Job board",
+    "why_interested": "I am passionate about building impactful products. This role aligns perfectly with my background.",
+    "greatest_strength": "I combine strong engineering fundamentals with a bias for shipping fast.",
+    "availability": "Immediately"
+  },
+
+  "_instructions": "Copy this file to profile.json and fill in your details. resume_path must be the full absolute path to your PDF resume. standard_answers are matched by keyword to free-text application questions."
+}

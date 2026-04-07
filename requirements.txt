@@ -1,0 +1,10 @@
+anthropic
+httpx
+anyio
+ddgs
+python-dotenv
+apscheduler
+fastapi
+uvicorn
+tzdata
+playwright

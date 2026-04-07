@@ -1,0 +1,36 @@
+# Secrets — NEVER commit these
+.env
+*.key
+
+# Personal data — keep private
+job_apply/profile.json
+job_apply/applied_jobs.json
+job_apply/screenshot_*.png
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Environments
+.venv/
+venv/
+env/
+.conda/
+
+# Editor
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Eval artifacts
+evals/last_eval_report.json
