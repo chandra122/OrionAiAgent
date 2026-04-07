@@ -8,6 +8,8 @@ Most "AI agent" projects are wrappers around LangChain or the Agent SDK. They hi
 
 The result is a fully functional AI agent with 13 tools, 3-layer safety guardrails, intelligent model routing, a streaming web UI, and the ability to auto-apply to real job listings on Greenhouse and Lever — filling forms, uploading your resume, and handling custom questions, all while you watch in a live browser window.
 
+![Orion agent answering a multi-step question with tool calls streaming in real time](assets/orion_demo_overview.svg)
+
 ---
 
 ## Why This Matters
@@ -69,6 +71,8 @@ Orion decides which Claude model to use in under 1 millisecond — no extra API 
 
 This matters because Opus is 15× more expensive than Haiku. Routing "What time is it?" to Haiku and "Write and run this data pipeline" to Opus saves significant cost without sacrificing quality.
 
+![Model tier badge shown on each response — green for haiku, indigo for sonnet, purple for opus](assets/orion_model_routing.svg)
+
 **Step 4 — Claude API call**
 
 Orion sends the full message history plus all 13 tool schemas to the Claude API. The `thinking` parameter (`{"type": "adaptive"}`) is included for Opus and Sonnet — this activates Claude's internal reasoning chain. It's omitted for Haiku, which doesn't support it.
@@ -84,6 +88,8 @@ Claude responds with either a text answer (`stop_reason: end_turn`) or a request
 5. Orion loops back to Step 4
 
 This continues for up to 50 iterations. Claude can chain tools — search the web to find a URL, read the file at that URL, run Python to analyze it, and write a report — all in one request.
+
+![Tool call executing in real time — tool name, input, and result visible in the UI](assets/orion_tool_call.svg)
 
 **Step 6 — Output validation (Layer 3)**
 
@@ -126,6 +132,28 @@ User Input
 
 ---
 
+### 3-Layer Guardrails — Safety Without Slowdown
+
+Traditional AI safety adds latency. Orion's guardrails add zero latency to the happy path because they run locally, with no extra API calls.
+
+![Guardrail event log — the Shield button reveals every safety check that ran](assets/orion_guardrails.svg)
+
+**Layer 1 — Input (before Claude sees anything)**
+
+Every message passes through 15+ jailbreak pattern checks, dangerous command detection, and a length limit. If anything triggers, the request is rejected in under a millisecond and Claude is never called.
+
+**Layer 2 — Tool calls (before each tool executes)**
+
+The riskiest tools get the strictest checks. `run_python` is sandboxed — any code containing `import os`, `import sys`, `import subprocess`, `eval()`, `exec()`, or `open(..., "w")` is blocked before it runs. `write_file` validates the target path against a protected list.
+
+**Layer 3 — Output (before the response reaches you)**
+
+The final text is scanned for secrets — API keys (`sk-`, `sk-ant-`), PEM private keys, and hardcoded credentials. If found, the response is replaced with a guardrail message.
+
+All high-risk tool calls are written to an in-memory audit log. The Shield button in the UI shows the full event history.
+
+---
+
 ### Job Auto-Apply — Automation You Can Watch
 
 The most striking feature of Orion is that it can apply to real jobs on your behalf. Here's how it works end to end.
@@ -155,7 +183,7 @@ Your personal details are stored in `job_apply/profile.json` — name, email, ph
 
 **Step 4 — Browser Automation**
 
-Orion launches a real Chromium browser window using Playwright's sync API (running in a thread executor to avoid Windows asyncio limitations). You watch every field being filled:
+Orion launches a real Chromium browser window using Playwright. You watch every field being filled:
 
 For Greenhouse applications:
 - `#first_name`, `#last_name`, `#email`, `#phone`
@@ -169,16 +197,15 @@ For Lever applications:
 - `input[name="urls[LinkedIn]"]`, `input[name="urls[GitHub]"]`
 - Resume upload, cover letter, custom questions
 
-**Step 5 — Confirmation check**
+![Chromium browser opened by Orion, automatically filling in a Greenhouse job application](assets/orion_job_apply.svg)
 
-After submission, Orion scans the page for success signals:
-- "Application submitted"
-- "Thank you for applying"
-- "We have received your application"
+**Step 5 — Confirmation and Logging**
 
-A screenshot is taken before and after submission. Every attempt — success or failure — is logged to `applied_jobs.json` with a timestamp.
+After submission, Orion scans the page for success signals ("Application submitted", "Thank you for applying"). A screenshot is taken before and after submission. Every attempt — success or failure — is logged to `applied_jobs.json` with a timestamp.
 
 **One rule Orion never breaks:** It will never apply to a job without explicit confirmation from you first. The system prompt enforces this strictly.
+
+![Job application history log showing submitted applications with timestamps and status](assets/orion_application_log.svg)
 
 ---
 
@@ -204,7 +231,7 @@ A screenshot is taken before and after submission. Every attempt — success or 
 ### Job Apply
 - Greenhouse and Lever supported — used by thousands of tech companies (Stripe, Airbnb, Netflix, Figma, Shopify)
 - Handles text fields, dropdowns, radio buttons, file uploads, cover letters, and custom questions
-- Alert email delivered within 5–8 seconds of submission
+- Application logged within 5–8 seconds of submission
 
 ### System
 - 20–30 frames per second in the browser UI
@@ -312,6 +339,7 @@ OrionAiAgent/
 │   ├── greenhouse.py     # Playwright form automation for Greenhouse
 │   ├── lever.py          # Playwright form automation for Lever
 │   └── profile.json.example  # Template — copy to profile.json and fill in your details
+├── assets/               # Screenshots and GIFs for this README
 ├── evals/
 │   └── run_evals.py      # Automated correctness tests for all tools and safety systems
 └── requirements.txt
