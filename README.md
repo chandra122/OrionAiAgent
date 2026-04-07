@@ -1,12 +1,12 @@
-# Orion — Agentic AI Built From Scratch
+# Orion Agentic AI Built From Scratch
 
-Imagine having an AI assistant that doesn't just chat — it actually does things. It searches the web, runs your code, reads your files, schedules tasks, and even applies to jobs for you while you watch.
+Imagine having an AI assistant that doesn't just chat; it actually does things. It searches the web, runs your code, reads your files, schedules tasks, and even applies to jobs for you while you watch.
 
 That's what I wanted. And when I couldn't find it built the right way, I built it myself.
 
 Most "AI agent" projects are wrappers around LangChain or the Agent SDK. They hide the hard parts behind abstractions. I wanted to understand every layer — how tool calls actually work, how to make Claude route intelligently between models, how to keep an AI system safe without slowing it down. That's why Orion is built entirely on the raw Anthropic Python SDK, with zero frameworks. Every part of the agentic loop is hand-written.
 
-The result is a fully functional AI agent with 13 tools, 3-layer safety guardrails, intelligent model routing, a streaming web UI, and the ability to auto-apply to real job listings on Greenhouse and Lever — filling forms, uploading your resume, and handling custom questions, all while you watch in a live browser window.
+The result is a fully functional AI agent with 13 tools, 3-layer safety guardrails, intelligent model routing, a streaming web UI, and the ability to auto-apply to real job listings on Greenhouse and Lever; filling forms, uploading your resume, and handling custom questions, all while you watch in a live browser window.
 
 ![Orion agent answering a multi-step question with tool calls streaming in real time](assets/orion_demo_overview.svg)
 
@@ -14,9 +14,9 @@ The result is a fully functional AI agent with 13 tools, 3-layer safety guardrai
 
 ## Why This Matters
 
-Over **70% of job seekers** report that the application process is mentally exhausting [LinkedIn Workforce Report]. The average job application takes 30–60 minutes of repetitive data entry — name, email, phone, LinkedIn, resume, the same fields on every single form.
+Over **70% of job seekers** report that the application process is mentally exhausting [LinkedIn Workforce Report]. The average job application takes 30–60 minutes of repetitive data entry; name, email, phone, LinkedIn, resume, the same fields on every single form.
 
-For people learning AI engineering, most tutorials show you how to call an API. Very few show you how to build a real agentic system — one that loops, recovers from errors, routes between models intelligently, and stays safe without human babysitting.
+For people learning AI engineering, most tutorials show you how to call an API. Very few show you how to build a real agentic system; one that loops, recovers from errors, routes between models intelligently, and stays safe without human babysitting.
 
 I built Orion to solve both problems at once.
 
@@ -24,19 +24,19 @@ I built Orion to solve both problems at once.
 
 ## What Orion Does
 
-**Conversational AI with real tools** — not just language, but action. Ask it to search the web, execute Python, read a file, or schedule a future task. It decides which tool to use, uses it, and keeps going until the job is done.
+**Conversational AI with real tools**: not just language, but action. Ask it to search the web, execute Python, read a file, or schedule a future task. It decides which tool to use, uses it, and keeps going until the job is done.
 
-**Intelligent model selection** — not every question needs Claude Opus. Orion routes each request to the right model automatically, in under a millisecond, with no extra API calls.
+**Intelligent model selection**: not every question needs Claude Opus. Orion routes each request to the right model automatically, in under a millisecond, with no extra API calls.
 
-**3-layer safety guardrails** — input is checked before Claude ever sees it, tool calls are validated before they execute, and output is scanned before it reaches you.
+**3-layer safety guardrails**: input is checked before Claude ever sees it, tool calls are validated before they execute, and output is scanned before it reaches you.
 
-**Job auto-apply** — Orion searches Greenhouse and Lever job boards, opens a real Chromium browser, and fills out the application form with your saved profile. You watch every field being filled in real time.
+**Job auto-apply**: Orion searches Greenhouse and Lever job boards, opens a real Chromium browser, and fills out the application form with your saved profile. You watch every field being filled in real time.
 
 ---
 
 ## How It Works
 
-### The Agentic Loop — Thinking in Turns
+### The Agentic Loop: Thinking in Turns
 
 The core insight behind an AI agent is simple: Claude doesn't just answer once. It thinks, acts, observes the result, and thinks again.
 
@@ -44,7 +44,7 @@ Here's exactly how Orion implements this:
 
 **Step 1 — User sends a message**
 
-The message arrives at the FastAPI backend via an HTTP POST. A session ID ties the request to a stored conversation history. This is how Orion remembers what you said earlier — Claude itself is stateless, so Orion maintains the full message list and sends it with every API call.
+The message arrives at the FastAPI backend via an HTTP POST. A session ID ties the request to a stored conversation history. This is how Orion remembers what you said earlier; Claude itself is stateless, so Orion maintains the full message list and sends it with every API call.
 
 **Step 2 — Safety check (Layer 1)**
 
@@ -58,7 +58,7 @@ If blocked, the rejection message streams back immediately. Claude never sees it
 
 **Step 3 — Model routing**
 
-Orion decides which Claude model to use in under 1 millisecond — no extra API call, no LLM-based decision. Pure rules:
+Orion decides which Claude model to use in under 1 millisecond; no extra API call, no LLM-based decision. Pure rules:
 
 | Signal | Routed to |
 |---|---|
@@ -87,7 +87,7 @@ Claude responds with either a text answer (`stop_reason: end_turn`) or a request
 4. The result is appended to the message history as a `tool_result` block
 5. Orion loops back to Step 4
 
-This continues for up to 50 iterations. Claude can chain tools — search the web to find a URL, read the file at that URL, run Python to analyze it, and write a report — all in one request.
+This continues for up to 50 iterations. Claude can chain tools; search the web to find a URL, read the file at that URL, run Python to analyze it, and write a report; all in one request.
 
 ![Tool call executing in real time — tool name, input, and result visible in the UI](assets/orion_tool_call.svg)
 
@@ -148,7 +148,7 @@ The riskiest tools get the strictest checks. `run_python` is sandboxed — any c
 
 **Layer 3 — Output (before the response reaches you)**
 
-The final text is scanned for secrets — API keys (`sk-`, `sk-ant-`), PEM private keys, and hardcoded credentials. If found, the response is replaced with a guardrail message.
+The final text is scanned for secrets; API keys (`sk-`, `sk-ant-`), PEM private keys, and hardcoded credentials. If found, the response is replaced with a guardrail message.
 
 All high-risk tool calls are written to an in-memory audit log. The Shield button in the UI shows the full event history.
 
