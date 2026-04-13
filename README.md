@@ -4,7 +4,7 @@ Imagine having an AI assistant that doesn't just chat; it actually does things. 
 
 That's what I wanted. And when I couldn't find it built the right way, I built it myself.
 
-Most "AI agent" projects are wrappers around LangChain or the Agent SDK. They hide the hard parts behind abstractions. I wanted to understand every layer — how tool calls actually work, how to make Claude route intelligently between models, how to keep an AI system safe without slowing it down. That's why Orion is built entirely on the raw Anthropic Python SDK, with zero frameworks. Every part of the agentic loop is hand-written.
+Most "AI agent" projects are wrappers around LangChain or the Agent SDK. They hide the hard parts behind abstractions. I wanted to understand every layer, how tool calls actually work, how to make Claude route intelligently between models, how to keep an AI system safe without slowing it down. That's why Orion is built entirely on the raw Anthropic Python SDK, with zero frameworks. Every part of the agentic loop is hand-written.
 
 The result is a fully functional AI agent with 13 tools, 3-layer safety guardrails, intelligent model routing, a streaming web UI, and the ability to auto-apply to real job listings on Greenhouse and Lever; filling forms, uploading your resume, and handling custom questions, all while you watch in a live browser window.
 
