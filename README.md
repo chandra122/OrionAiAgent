@@ -2,7 +2,7 @@
 
 Imagine having an AI assistant that doesn't just chat; it actually does things. It searches the web, runs your code, reads your files, schedules tasks, and even applies to jobs for you while you watch.
 
-That's what I wanted. And when I couldn't find it built the right way, I built it myself.
+That's what I wanted. And when I couldn't find it built the right way, I built it myself. Used Claude API's instead of OpenAI's API's.
 
 Most "AI agent" projects are wrappers around LangChain or the Agent SDK. They hide the hard parts behind abstractions. I wanted to understand every layer, how tool calls actually work, how to make Claude route intelligently between models, how to keep an AI system safe without slowing it down. That's why Orion is built entirely on the raw Anthropic Python SDK, with zero frameworks. Every part of the agentic loop is hand-written.
 
